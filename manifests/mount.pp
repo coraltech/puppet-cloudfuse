@@ -1,9 +1,9 @@
 
 define cloudfuse::mount (
 
-  $mount_config          = $cloudfuse::params::mount_config,
-  $kernel_loaded_modules = $cloudfuse::params::kernel_loaded_modules,
-  $mount_path            = $cloudfuse::params::mount_path,
+  $mount_config          = $cloudfuse::params::os_mount_config,
+  $kernel_loaded_modules = $cloudfuse::params::os_kernel_loaded_modules,
+  $mount_path            = $cloudfuse::params::os_mount_path,
   $gid                   = $cloudfuse::params::gid,
   $umask                 = $cloudfuse::params::umask,
   $auth_url              = $cloudfuse::params::auth_url,

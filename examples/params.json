@@ -1,0 +1,12 @@
+{
+  "cloudfuse_libfuse_dev_ensure" : "present",
+  "cloudfuse_source" : "git://github.com/redbo/cloudfuse.git",
+  "cloudfuse_revision" : "master",
+  "cloudfuse_gid" : "0",
+  "cloudfuse_umask" : "007",
+  "cloudfuse_auth_url" : "https://auth.api.rackspacecloud.com/v1.0",
+  "cloudfuse_cache_timeout" : "300",
+  "cloudfuse_cloud_user" : "",
+  "cloudfuse_cloud_api_key" : "",
+  "cloudfuse_container" : "public"
+}

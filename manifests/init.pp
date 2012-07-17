@@ -3,13 +3,15 @@
 #   This module installs and configures the cloudfuse library so we can connect
 #   to Rackspace Cloud Files.
 #
+#   Supports Hiera!
+#
 #   Adrian Webb <adrian.webb@coraltech.net>
 #   2012-07-14
 #
 #   Tested platforms:
 #    - Ubuntu 12.04
 #
-# Parameters:
+# Parameters: (see <examples/params.json> for Hiera configurations)
 #
 #
 # Actions:
@@ -25,26 +27,26 @@
 # [Remember: No empty lines between comments and class definition]
 class cloudfuse (
 
-  $libfuse_dev_version = $cloudfuse::params::libfuse_dev_version,
-  $cloudfuse_source    = $cloudfuse::params::cloudfuse_source,
-  $cloudfuse_revision  = $cloudfuse::params::cloudfuse_revision,
+  $libfuse_dev_ensure = $cloudfuse::params::libfuse_dev_ensure,
+  $cloudfuse_source   = $cloudfuse::params::cloudfuse_source,
+  $cloudfuse_revision = $cloudfuse::params::cloudfuse_revision,
 
 ) inherits cloudfuse::params {
 
-  $libfuse_dev_package = $cloudfuse::params::libfuse_dev_package
+  $libfuse_dev_package = $cloudfuse::params::os_libfuse_dev_package
 
-  $cloudfuse_repo      = $cloudfuse::params::cloudfuse_repo
+  $cloudfuse_repo      = $cloudfuse::params::os_cloudfuse_repo
   $test_cloudfuse_cmd  = "diff ${cloudfuse_repo}/.git/_COMMIT ${cloudfuse_repo}/.git/_COMMIT.last"
 
   #-----------------------------------------------------------------------------
   # Installation
 
-  if ! $libfuse_dev_package or ! $libfuse_dev_version {
+  if ! $libfuse_dev_package or ! $libfuse_dev_ensure {
     fail('Cloudfuse package name and version must be defined')
   }
   package { 'libfuse-dev':
     name   => $libfuse_dev_package,
-    ensure => $libfuse_dev_version,
+    ensure => $libfuse_dev_ensure,
   }
 
   git::repo { $cloudfuse_repo:
