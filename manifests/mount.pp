@@ -3,7 +3,7 @@ define cloudfuse::mount (
 
   $mount_config          = $cloudfuse::params::os_mount_config,
   $kernel_loaded_modules = $cloudfuse::params::os_kernel_loaded_modules,
-  $mount_path            = $cloudfuse::params::os_mount_path,
+  $mount_dir             = $cloudfuse::params::os_mount_dir,
   $gid                   = $cloudfuse::params::gid,
   $umask                 = $cloudfuse::params::umask,
   $auth_url              = $cloudfuse::params::auth_url,
@@ -20,7 +20,7 @@ define cloudfuse::mount (
 
   file_line { "fstab entry for ${name}":
     path    => $mount_config,
-    line    => "cloudfuse ${mount_path} fuse defaults,allow_other,authurl=${auth_url},use_snet=true,cache_timeout=${cache_timeout},username=${cloud_user},api_key=${cloud_api_key},container=${container} 0 0",
+    line    => "cloudfuse ${mount_dir} fuse defaults,allow_other,authurl=${auth_url},use_snet=true,cache_timeout=${cache_timeout},username=${cloud_user},api_key=${cloud_api_key},container=${container} 0 0",
     require => Class['cloudfuse'],
   }
 

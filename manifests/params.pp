@@ -40,7 +40,7 @@ class cloudfuse::params {
 
       $os_kernel_loaded_modules = '/etc/modules'
       $os_mount_config          = '/etc/fstab'
-      $os_mount_path            = '/media/cloudfuse'
+      $os_mount_dir             = '/media/cloudfuse'
     }
     centos, redhat: {}
   }
