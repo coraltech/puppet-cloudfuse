@@ -1,10 +1,12 @@
 
 class cloudfuse::params {
 
+  include cloudfuse::default
+
   #-----------------------------------------------------------------------------
   # General configurations
 
-  if $::hiera_exists {
+  if $::hiera_ready {
     $libfuse_dev_ensure = hiera('cloudfuse_libfuse_dev_ensure', $cloudfuse::default::libfuse_dev_ensure)
     $cloudfuse_source   = hiera('cloudfuse_source', $cloudfuse::default::cloudfuse_source)
     $cloudfuse_revision = hiera('cloudfuse_revision', $cloudfuse::default::cloudfuse_revision)
@@ -34,9 +36,9 @@ class cloudfuse::params {
 
   case $::operatingsystem {
     debian, ubuntu: {
-      $os_libfuse_dev_package = 'libfuse-dev'
+      $os_libfuse_dev_package   = 'libfuse-dev'
 
-      $os_cloudfuse_repo      = '/tmp/cloudfuse'
+      $os_cloudfuse_repo        = '/tmp/cloudfuse'
 
       $os_kernel_loaded_modules = '/etc/modules'
       $os_mount_config          = '/etc/fstab'
