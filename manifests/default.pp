@@ -1,6 +1,6 @@
 
 class cloudfuse::default {
-  $libfuse_dev_ensure = 'present'
+  $dev_ensure         = 'present'
   $cloudfuse_source   = 'git://github.com/redbo/cloudfuse.git'
   $cloudfuse_revision = 'master'
   $gid                = 0

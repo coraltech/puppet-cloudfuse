@@ -27,69 +27,23 @@
 # [Remember: No empty lines between comments and class definition]
 class cloudfuse (
 
-  $libfuse_dev_ensure = $cloudfuse::params::libfuse_dev_ensure,
-  $cloudfuse_source   = $cloudfuse::params::cloudfuse_source,
-  $cloudfuse_revision = $cloudfuse::params::cloudfuse_revision,
+  $repo        = $cloudfuse::params::os_cloudfuse_repo,
+  $source      = $cloudfuse::params::cloudfuse_source,
+  $revision    = $cloudfuse::params::cloudfuse_revision,
+  $dev_package = $cloudfuse::params::os_dev_package,
+  $dev_ensure  = $cloudfuse::params::dev_ensure,
 
 ) inherits cloudfuse::params {
 
-  $libfuse_dev_package = $cloudfuse::params::os_libfuse_dev_package
-
-  $cloudfuse_repo      = $cloudfuse::params::os_cloudfuse_repo
-  $test_cloudfuse_cmd  = "diff ${cloudfuse_repo}/.git/_COMMIT ${cloudfuse_repo}/.git/_COMMIT.last"
+  include global
 
   #-----------------------------------------------------------------------------
   # Installation
 
-  if ! $libfuse_dev_package or ! $libfuse_dev_ensure {
-    fail('Cloudfuse package name and version must be defined')
+  global::build { $repo:
+    source      => $source,
+    revision    => $revision,
+    dev_package => $dev_package,
+    dev_ensure  => $dev_ensure,
   }
-  package { 'libfuse-dev':
-    name   => $libfuse_dev_package,
-    ensure => $libfuse_dev_ensure,
-  }
-
-  git::repo { $cloudfuse_repo:
-    source     => $cloudfuse_source,
-    revision   => $cloudfuse_revision,
-    require    => [ Class['git'], Package['libfuse-dev'] ],
-  }
-
-  Exec {
-    cwd     => $cloudfuse_repo,
-    path => [ '/bin', '/usr/bin', '/usr/local/bin' ],
-  }
-
-  exec {
-    'check-cloudfuse':
-      command   => "git rev-parse HEAD > ${cloudfuse_repo}/.git/_COMMIT",
-      require   => Class['git'],
-      subscribe => Git::Repo[$cloudfuse_repo];
-
-    'configure-cloudfuse':
-      command   => './configure',
-      unless    => $test_cloudfuse_cmd,
-      subscribe => Exec['check-cloudfuse'];
-
-    'make-cloudfuse':
-      command   => 'make',
-      unless    => $test_cloudfuse_cmd,
-      subscribe => Exec['configure-cloudfuse'];
-
-    'make-install-cloudfuse':
-      command   => 'make install',
-      unless    => $test_cloudfuse_cmd,
-      subscribe => Exec['make-cloudfuse'];
-  }
-
-  file { "save-cloudfuse":
-    path      => "${cloudfuse_repo}/.git/_COMMIT.last",
-    source    => "${cloudfuse_repo}/.git/_COMMIT",
-    subscribe => Exec['make-install-cloudfuse'],
-  }
-
-  #-----------------------------------------------------------------------------
-  # Configuration
-
-
 }

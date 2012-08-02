@@ -7,7 +7,7 @@ class cloudfuse::params {
   # General configurations
 
   if $::hiera_ready {
-    $libfuse_dev_ensure = hiera('cloudfuse_libfuse_dev_ensure', $cloudfuse::default::libfuse_dev_ensure)
+    $dev_ensure         = hiera('cloudfuse_dev_ensure', $cloudfuse::default::dev_ensure)
     $cloudfuse_source   = hiera('cloudfuse_source', $cloudfuse::default::cloudfuse_source)
     $cloudfuse_revision = hiera('cloudfuse_revision', $cloudfuse::default::cloudfuse_revision)
     $gid                = hiera('cloudfuse_gid', $cloudfuse::default::gid)
@@ -19,7 +19,7 @@ class cloudfuse::params {
     $container          = hiera('cloudfuse_container', $cloudfuse::default::container)
   }
   else {
-    $libfuse_dev_ensure = $cloudfuse::default::libfuse_dev_ensure
+    $dev_ensure         = $cloudfuse::default::dev_ensure
     $cloudfuse_source   = $cloudfuse::default::cloudfuse_source
     $cloudfuse_revision = $cloudfuse::default::cloudfuse_revision
     $gid                = $cloudfuse::default::gid
@@ -36,14 +36,16 @@ class cloudfuse::params {
 
   case $::operatingsystem {
     debian, ubuntu: {
-      $os_libfuse_dev_package   = 'libfuse-dev'
+      $os_dev_package           = 'libfuse-dev'
 
-      $os_cloudfuse_repo        = '/tmp/cloudfuse'
+      $os_cloudfuse_repo        = '/usr/local/lib/cloudfuse'
 
       $os_kernel_loaded_modules = '/etc/modules'
       $os_mount_config          = '/etc/fstab'
       $os_mount_dir             = '/media/cloudfuse'
     }
-    centos, redhat: {}
+    default: {
+      fail("The cloudfuse module is not currently supported on ${::operatingsystem}")
+    }
   }
 }
