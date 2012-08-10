@@ -27,11 +27,11 @@
 # [Remember: No empty lines between comments and class definition]
 class cloudfuse (
 
-  $repo        = $cloudfuse::params::os_cloudfuse_repo,
-  $source      = $cloudfuse::params::cloudfuse_source,
-  $revision    = $cloudfuse::params::cloudfuse_revision,
-  $dev_package = $cloudfuse::params::os_dev_package,
-  $dev_ensure  = $cloudfuse::params::dev_ensure,
+  $repo         = $cloudfuse::params::os_cloudfuse_repo,
+  $source       = $cloudfuse::params::cloudfuse_source,
+  $revision     = $cloudfuse::params::cloudfuse_revision,
+  $dev_packages = $cloudfuse::params::os_dev_packages,
+  $dev_ensure   = $cloudfuse::params::dev_ensure,
 
 ) inherits cloudfuse::params {
 
@@ -40,10 +40,10 @@ class cloudfuse (
   #-----------------------------------------------------------------------------
   # Installation
 
-  global::build { $repo:
-    source      => $source,
-    revision    => $revision,
-    dev_package => $dev_package,
-    dev_ensure  => $dev_ensure,
+  global::make { $repo:
+    source       => $source,
+    revision     => $revision,
+    dev_packages => $dev_packages,
+    dev_ensure   => $dev_ensure,
   }
 }

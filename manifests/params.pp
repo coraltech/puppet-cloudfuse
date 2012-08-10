@@ -36,7 +36,7 @@ class cloudfuse::params {
 
   case $::operatingsystem {
     debian, ubuntu: {
-      $os_dev_package           = 'libfuse-dev'
+      $os_dev_packages          = [ 'libfuse-dev', 'libxml2-dev' ]
 
       $os_cloudfuse_repo        = '/usr/local/lib/cloudfuse'
 
