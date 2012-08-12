@@ -16,7 +16,6 @@ class cloudfuse::params {
     $cache_timeout      = hiera('cloudfuse_cache_timeout', $cloudfuse::default::cache_timeout)
     $cloud_user         = hiera('cloudfuse_user', $cloudfuse::default::cloud_user)
     $cloud_api_key      = hiera('cloudfuse_api_key', $cloudfuse::default::cloud_api_key)
-    $container          = hiera('cloudfuse_container', $cloudfuse::default::container)
   }
   else {
     $dev_ensure         = $cloudfuse::default::dev_ensure
@@ -28,7 +27,6 @@ class cloudfuse::params {
     $cache_timeout      = $cloudfuse::default::cache_timeout
     $cloud_user         = $cloudfuse::default::cloud_user
     $cloud_api_key      = $cloudfuse::default::cloud_api_key
-    $container          = $cloudfuse::default::container
   }
 
   #-----------------------------------------------------------------------------
@@ -43,6 +41,8 @@ class cloudfuse::params {
       $os_kernel_loaded_modules = '/etc/modules'
       $os_mount_config          = '/etc/fstab'
       $os_mount_home            = '/media'
+
+      $os_mount_cmd             = '/bin/mount -a'
     }
     default: {
       fail("The cloudfuse module is not currently supported on ${::operatingsystem}")

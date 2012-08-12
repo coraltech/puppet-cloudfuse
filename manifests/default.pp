@@ -9,5 +9,4 @@ class cloudfuse::default {
   $cache_timeout      = '300'
   $cloud_user         = ''
   $cloud_api_key      = ''
-  $container          = 'public'
 }
