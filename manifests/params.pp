@@ -1,51 +1,26 @@
 
-class cloudfuse::params {
+class cloudfuse::params inherits cloudfuse::default {
 
-  include cloudfuse::default
+  $repo                  = module_param('repo')
+  $source                = module_param('source')
+  $revision              = module_param('revision')
+  $dev_packages          = module_param('dev_packages')
+  $dev_ensure            = module_param('dev_ensure')
 
-  #-----------------------------------------------------------------------------
-  # General configurations
+  #---
 
-  if $::hiera_ready {
-    $dev_ensure         = hiera('cloudfuse_dev_ensure', $cloudfuse::default::dev_ensure)
-    $cloudfuse_source   = hiera('cloudfuse_source', $cloudfuse::default::cloudfuse_source)
-    $cloudfuse_revision = hiera('cloudfuse_revision', $cloudfuse::default::cloudfuse_revision)
-    $gid                = hiera('cloudfuse_gid', $cloudfuse::default::gid)
-    $umask              = hiera('cloudfuse_umask', $cloudfuse::default::umask)
-    $auth_url           = hiera('cloudfuse_auth_url', $cloudfuse::default::auth_url)
-    $cache_timeout      = hiera('cloudfuse_cache_timeout', $cloudfuse::default::cache_timeout)
-    $cloud_user         = hiera('cloudfuse_user', $cloudfuse::default::cloud_user)
-    $cloud_api_key      = hiera('cloudfuse_api_key', $cloudfuse::default::cloud_api_key)
-  }
-  else {
-    $dev_ensure         = $cloudfuse::default::dev_ensure
-    $cloudfuse_source   = $cloudfuse::default::cloudfuse_source
-    $cloudfuse_revision = $cloudfuse::default::cloudfuse_revision
-    $gid                = $cloudfuse::default::gid
-    $umask              = $cloudfuse::default::umask
-    $auth_url           = $cloudfuse::default::auth_url
-    $cache_timeout      = $cloudfuse::default::cache_timeout
-    $cloud_user         = $cloudfuse::default::cloud_user
-    $cloud_api_key      = $cloudfuse::default::cloud_api_key
-  }
+  $kernel_loaded_modules = module_param('kernel_loaded_modules')
 
-  #-----------------------------------------------------------------------------
-  # Operting system specific configurations
+  $mount_config          = module_param('mount_config')
+  $mount_home            = module_param('mount_home')
+  $mount_cmd             = module_param('mount_cmd')
 
-  case $::operatingsystem {
-    debian, ubuntu: {
-      $os_dev_packages          = [ 'libfuse-dev', 'libxml2-dev' ]
+  #---
 
-      $os_cloudfuse_repo        = '/usr/local/lib/cloudfuse'
-
-      $os_kernel_loaded_modules = '/etc/modules'
-      $os_mount_config          = '/etc/fstab'
-      $os_mount_home            = '/media'
-
-      $os_mount_cmd             = '/bin/mount -a'
-    }
-    default: {
-      fail("The cloudfuse module is not currently supported on ${::operatingsystem}")
-    }
-  }
+  $gid                   = module_param('gid')
+  $umask                 = module_param('umask')
+  $auth_url              = module_param('auth_url')
+  $cache_timeout         = module_param('cache_timeout')
+  $cloud_user            = module_param('cloud_user')
+  $cloud_api_key         = module_param('cloud_api_key')
 }

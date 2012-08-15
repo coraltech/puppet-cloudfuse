@@ -1,16 +1,16 @@
 
 define cloudfuse::mount (
 
-  $mount_config          = $cloudfuse::params::os_mount_config,
-  $kernel_loaded_modules = $cloudfuse::params::os_kernel_loaded_modules,
-  $mount_dir             = "${cloudfuse::params::os_mount_home}/${name}",
+  $mount_config          = $cloudfuse::params::mount_config,
+  $kernel_loaded_modules = $cloudfuse::params::kernel_loaded_modules,
+  $mount_dir             = "${cloudfuse::params::mount_home}/${name}",
   $gid                   = $cloudfuse::params::gid,
   $umask                 = $cloudfuse::params::umask,
   $auth_url              = $cloudfuse::params::auth_url,
   $cache_timeout         = $cloudfuse::params::cache_timeout,
   $cloud_user            = $cloudfuse::params::cloud_user,
   $cloud_api_key         = $cloudfuse::params::cloud_api_key,
-  $mount_cmd             = $cloudfuse::params::os_mount_cmd,
+  $mount_cmd             = $cloudfuse::params::mount_cmd,
 
 ) {
 
